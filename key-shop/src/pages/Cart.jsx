@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 
-function Cart({ cartItems }) {
+function Cart({ cartItems, increaseQuantity, decreaseQuantity }) {
+  console.log(cartItems);
+
   const totalAmount = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0,
@@ -11,8 +13,7 @@ function Cart({ cartItems }) {
       <section className="cartPage emptyCart">
         <h1>Your Cart is Empty</h1>
         <p>You have not added any key chain yet</p>
-
-        <Link to="/" class="continueShoppingBtn">
+        <Link to="/" className="continueShoppingBtn">
           Continue Shopping
         </Link>
       </section>
@@ -27,18 +28,18 @@ function Cart({ cartItems }) {
       </div>
 
       <div className="cartLayout">
-        <div class="cartItems">
+        <div className="cartItems">
           {cartItems.map((item) => (
-            <div className="cartItem">
+            <div className="cartItem" key={item.id}>
               <img src={item.image} alt={item.name} />
+
               <div className="cartItemDetails">
                 <h3>{item.name}</h3>
                 <p>₹{item.price} each</p>
-
                 <div className="quantityBox">
-                  <button>-</button>
+                  <button onClick={() => decreaseQuantity(item.id)}>-</button>
                   <span>{item.quantity}</span>
-                  <button>+</button>
+                  <button onClick={() => increaseQuantity(item.id)}>+</button>
                 </div>
               </div>
 
@@ -49,6 +50,10 @@ function Cart({ cartItems }) {
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="cartTotal">
+        <h2>Total: ₹{totalAmount}</h2>
       </div>
     </section>
   );

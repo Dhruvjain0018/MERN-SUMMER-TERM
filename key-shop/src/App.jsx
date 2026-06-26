@@ -7,16 +7,17 @@ import Products from "./pages/Products";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Cart from "./pages/Cart";
+
 import "./App.css";
 
 function App() {
+  // const [cartCount, setCartCount]=useState(0);
   const [cartItems, setCartItems] = useState([]);
-
   function addToCart(product) {
+    if (!product) {
+      return;
+    }
     setCartItems((previousCartItems) => {
-      if(!product){
-        return;
-      }
       const productAlreadyInCart = previousCartItems.find(
         (item) => item.id == product.id,
       );
@@ -29,6 +30,28 @@ function App() {
         });
       }
       return [...previousCartItems, { ...product, quantity: 1 }];
+    });
+  }
+
+  function increaseQuantity(productId) {
+    setCartItems((previousCartItems) => {
+      return previousCartItems.map((item) => {
+        return item.id == productId
+          ? { ...item, quantity: item.quantity + 1 }
+          : item;
+      });
+    });
+  }
+
+  function descreaseQuantity(productId) {
+    setCartItems((previousCartItems) => {
+      return previousCartItems
+        .map((item) => {
+          return item.id == productId
+            ? { ...item, quantity: item.quantity - 1 }
+            : item;
+        })
+        .filter((item) => item.quantity > 0);
     });
   }
 
@@ -45,12 +68,20 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/contact-us" element={<Contact />} />
             <Route path="/cart" element={<Cart cartItems={cartItems} />} />
+            <Route
+              path="/cart"
+              element={
+                <Cart
+                  cartItems={cartItems}
+                  increaseQuantity={increaseQuantity}
+                  decreaseQuantity={descreaseQuantity}
+                />
+              }
+            />
           </Routes>
         </main>
         <Footer />
       </div>
     </BrowserRouter>
   );
-}
-
-export default App;
+} // JSX

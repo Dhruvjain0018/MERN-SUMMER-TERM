@@ -48,7 +48,7 @@ function Home({addToCart}) {
         </div>
 
         <div className="heroImage">
-          <img src="" height="100%" width="100%" alt="Key chain" />
+          <img src="./images/neon keychain.webp" height="100%" width="100%" alt="Key chain" />
         </div>
       </section>
 
