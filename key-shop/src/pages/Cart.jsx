@@ -1,10 +1,20 @@
 import { Link } from "react-router-dom";
 
-function Cart({ cartItems, increaseQuantity, decreaseQuantity }) {
+function Cart({
+  cartItems,
+  increaseQuantity,
+  decreaseQuantity,
+  removeFromCart,
+  clearCart,
+}) {
   console.log(cartItems);
 
   const totalAmount = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
+    0,
+  );
+  const totalItems = cartItems.reduce(
+    (total, item) => total + item.quantity,
     0,
   );
 
@@ -24,7 +34,9 @@ function Cart({ cartItems, increaseQuantity, decreaseQuantity }) {
     <section className="cartPage">
       <div className="cartHeading">
         <h1>Your Shopping Cart</h1>
-        <button className="clearCartBtn">Clear Cart</button>
+        <button className="clearCartBtn" onClick={clearCart}>
+          Clear Cart
+        </button>
       </div>
 
       <div className="cartLayout">
@@ -45,15 +57,31 @@ function Cart({ cartItems, increaseQuantity, decreaseQuantity }) {
 
               <div className="cartItemRight">
                 <strong>₹{item.price * item.quantity}</strong>
-                <button className="removeBtn">Remove</button>
+                <button
+                  className="removeBtn"
+                  onClick={() => removeFromCart(item.id)}
+                >
+                  Remove
+                </button>
               </div>
             </div>
           ))}
         </div>
-      </div>
-
-      <div className="cartTotal">
-        <h2>Total: ₹{totalAmount}</h2>
+        <div className="cartSummary">
+          <h2>Order Summary</h2>
+          <div className="summaryRow">
+            <span>Total Items</span>
+            <strong>{totalItems}</strong>
+          </div>
+          <div className="summaryRow totalRow">
+            <span>Total Amount</span>
+            <strong>₹{totalAmount}</strong>
+          </div>
+          <button className="checkOutBtn">Proceed to Checkout</button>
+          <Link to="/" className="continueLink">
+            Continue Shopping
+          </Link>
+        </div>
       </div>
     </section>
   );

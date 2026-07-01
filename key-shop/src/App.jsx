@@ -49,6 +49,15 @@ function App() {
     );
   }
 
+  function removeFromCart(productId) {
+    setCartItems((previousCartItems) =>
+      previousCartItems.filter((item) => item.id !== productId),
+    );
+  }
+  function clearCart() {
+    setCartItems([]);
+  }
+
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   return (
@@ -68,6 +77,8 @@ function App() {
                   cartItems={cartItems}
                   increaseQuantity={increaseQuantity}
                   decreaseQuantity={decreaseQuantity}
+                  removeFromCart={removeFromCart}
+                  clearCart={clearCart}
                 />
               }
             />
